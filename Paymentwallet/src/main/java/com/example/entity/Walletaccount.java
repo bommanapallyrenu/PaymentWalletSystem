@@ -20,21 +20,21 @@ public class Walletaccount
 	double accountbalance;
 	String status;
 	
-	 @OneToMany(mappedBy="walletaccount",fetch = FetchType.EAGER)
-	 private List<Wallettransaction> translist=new ArrayList<>();
+	 //@OneToMany(mappedBy="walletaccount",fetch = FetchType.EAGER)
+	// private List<Wallettransaction> translist=new ArrayList<>();
 	 
 	 
 	public Walletaccount() {
 		super();
 	}
-	public List<Wallettransaction> getTranslist() {
+	/*public List<Wallettransaction> getTranslist() {
 		return translist;
 	}
 
 	public void setTranslist(List<Wallettransaction> translist) {
 		this.translist = translist;
 	}
-
+*/
 	public int getAccountid() {
 		return accountid;
 	}

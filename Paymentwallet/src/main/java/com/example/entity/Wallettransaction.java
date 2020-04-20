@@ -1,40 +1,65 @@
 package com.example.entity;
 
-import java.sql.Date;
+import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 @Table(name="wallettransaction")
 public class Wallettransaction 
 {
 	@Id
-	long transactionID;
-	Date transactionDate;
-	double Amount;
-	String description;
-	double Accountbalance;
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "transactionID", updatable = false, nullable = false)
+	private Long transactionID;
 	
-	 @ManyToOne
-	 private Walletaccount walletaccount;
+	
+	private double Amount;
+	private String description;
+	private double Accountbalance;
+	private int accountid;
+	 
+	@Temporal(TemporalType.DATE)
+	@Column(name="transactionDate")
+	private Date transactionDate;
+	
+	
+	// @ManyToOne
+	// private Walletaccount walletaccount;
 	public Wallettransaction() {
 		super();
 	}
 	
-	public Wallettransaction(long transactionID, Date transactionDate, double amount, String description,
-			double accountbalance, Walletaccount walletaccount) {
+	
+	public Wallettransaction(Long transactionID, double amount, String description, double accountbalance,
+			int accountid, Date transactionDate) {
 		super();
 		this.transactionID = transactionID;
-		this.transactionDate = transactionDate;
 		this.Amount = amount;
 		this.description = description;
 		this.Accountbalance = accountbalance;
-		this.walletaccount = walletaccount;
+		this.accountid = accountid;
+		this.transactionDate = transactionDate;
 	}
+
+
+	public int getAccountid() {
+		return accountid;
+	}
+
+	public void setAccountid(int accountid) {
+		this.accountid = accountid;
+	}
+
 	public long getTransactionID() {
 		return transactionID;
 	}

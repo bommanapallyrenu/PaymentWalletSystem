@@ -1,6 +1,7 @@
 package com.example.service;
 
 import com.example.entity.Walletaccount;
+import com.example.entity.Wallettransaction;
 
 public interface WalletaccountService {
 
@@ -11,8 +12,8 @@ public interface WalletaccountService {
     
      Walletaccount deposit(Walletaccount wa,double amount);
      
-    
+    double getbalance(int id);
 
-	
+	Walletaccount fundTransfer(int fromaccountid,int toaccountid,double amount);
 	
 }

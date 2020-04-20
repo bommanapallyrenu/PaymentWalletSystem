@@ -9,6 +9,7 @@ import com.example.dao.UserDaoImpl;
 import com.example.dao.WalletaccountdaoImpl;
 import com.example.entity.Userdata;
 import com.example.entity.Walletaccount;
+import com.example.entity.Wallettransaction;
 
 
 
@@ -36,5 +37,14 @@ public class WalletaccountServiceImpl implements WalletaccountService{
 	{
 		return dao.deposit(wa, amount);
 	}
+	public double getbalance(int id)
+	{
+		return dao.getbalance(id);
+	}
+	public Walletaccount fundTransfer(int fromaccountid,int toaccountid,double amount)
+	{
+		return dao.fundTransfer(fromaccountid,toaccountid,amount);
+	}
+
 
 }
