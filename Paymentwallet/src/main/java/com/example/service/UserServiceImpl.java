@@ -1,47 +1,75 @@
 package com.example.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.example.entity.Userdata;
-import com.example.dao.UserDaoImpl;
+import com.example.exceptions.IdNotFoundException;
+import com.example.dao.UserDao;
 
 @Service
 @Transactional
 public class UserServiceImpl implements UserService 
 {
 @Autowired
-UserDaoImpl dao;
+UserDao dao;
 
 @Override
 public Userdata addUser(Userdata u) {
-	return dao.addUser(u);
+	return dao.save(u);
 }
 
 @Override
 public List<Userdata> getAllUsers() 
 {
-return dao.getAllUsers();
+return dao.findAll();
 }
 
+@Override
+public Userdata getuserbyid(int userId) {
+	Optional<Userdata> a = dao.findById(userId);
+	if (a.isPresent()) 
+		 return a.get();
+	else
+		throw new IdNotFoundException("user does not exists");
+}
 
 @Override
-public Userdata deleteUser(int userId) 
+public void deleteUser(int userId) 
 {
-	return dao.deleteUser(userId);
+	 dao.deleteById(userId);
 }
 
 @Override
 public Userdata updateUser(Userdata u) {
-	return dao.updateUser(u);	
+	boolean value=dao.existsById(u.getUserId());
+	if(value)
+	{
+		u.setUserName(u.getUserName());
+		u.setUserPassword(u.getUserPassword());
+		u.setUserPhoneno(u.getUserPhoneno());
+		u.setUserEmail(u.getUserEmail());
+	}
+	dao.save(u);
+	return u;	
 }
 
 @Override
 public Boolean loginUser(Userdata u)
 {
-	return dao.loginUser(u);
+    Optional <Userdata> ud=dao.findById(u.getUserId());
+	if(!ud.isPresent())
+	{
+		throw new IdNotFoundException("User does not exists");
+	}
+	if(!ud.get().getUserPassword().equals(u.getUserPassword())){
+		throw new IdNotFoundException("Password mismatch");
+	}
+	return true;
+	
 }
 }

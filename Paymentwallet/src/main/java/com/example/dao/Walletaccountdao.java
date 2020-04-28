@@ -5,7 +5,7 @@ import com.example.entity.Walletaccount;
 
 public interface Walletaccountdao {
 	
-	public Walletaccount addAccount(Walletaccount wa) ;
+	public Walletaccount addAccount(int userid,Walletaccount wa) ;
 	
 	public Walletaccount deleteaccount(int accountid);
 	

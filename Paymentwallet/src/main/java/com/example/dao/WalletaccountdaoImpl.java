@@ -1,18 +1,16 @@
 package com.example.dao;
 
-import java.sql.Date;
-import java.util.Calendar;
+import java.time.LocalDate;
 import java.util.Random;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.PathVariable;
-
 import com.example.entity.Userdata;
 import com.example.entity.Walletaccount;
 import com.example.entity.Wallettransaction;
+import com.example.exceptions.AccountWithUserIdExistsException;
 
 
 @Repository
@@ -22,9 +20,22 @@ public class WalletaccountdaoImpl implements Walletaccountdao{
 	 EntityManager em;
 	
 	@Override
-	public Walletaccount addAccount(Walletaccount wa) {
-		Walletaccount wal_account=em.merge(wa);
-			return wal_account ;
+	public Walletaccount addAccount(int userid,Walletaccount wa) {
+		
+		
+		Userdata userdata=em.find(Userdata.class, userid);
+		if(userdata==null)
+		{
+			return null;
+		}
+		if(userdata.getWalletaccount()==null)
+		{
+			Walletaccount walletaccount=em.merge(wa);
+			userdata.setWalletaccount(walletaccount);
+			return walletaccount ;
+		}
+		else
+			throw new AccountWithUserIdExistsException("account with this userid exists");
 	}
 	
 	
@@ -41,22 +52,23 @@ public class WalletaccountdaoImpl implements Walletaccountdao{
 	@Override
 	public Walletaccount deposit(Walletaccount wa, double amount) {
 		
-		  Walletaccount wal_account=em.find(Walletaccount.class,wa.getAccountid());
+		  Walletaccount walletaccount=em.find(Walletaccount.class,wa.getAccountid());
 		  long transactionID=new Random().nextInt(100000);
-			if(wal_account!=null&amount>0)
+			if((walletaccount!=null)&&(amount>0))
 			{
 				Wallettransaction wt=new Wallettransaction();
 				wt.setAccountid(wa.getAccountid());
-				wt.setAccountbalance(wal_account.getAccountbalance()+amount);
+				wt.setAccountbalance(walletaccount.getAccountbalance()+amount);
 				wt.setAmount(amount);
 				wt.setDescription("Deposited");
-				//wt.setTransactionDate(new Date());
+				LocalDate localdate=LocalDate.now();
+				wt.setTransactionDate(localdate);
 				wt.setTransactionID(transactionID);
 				em.merge(wt);
-				wal_account.setAccountbalance(wal_account.getAccountbalance()+amount);
-				wal_account.setStatus("Deposited");
+				walletaccount.setAccountbalance(walletaccount.getAccountbalance()+amount);
+				walletaccount.setStatus("Deposited");
 				
-				return wal_account;
+				return walletaccount;
 			}
 			else
 			{
@@ -66,25 +78,26 @@ public class WalletaccountdaoImpl implements Walletaccountdao{
 	
 	@Override
       public Walletaccount fundTransfer(int fromaccountid, int toaccountid, double amount) {
-    	  Walletaccount wal_account1=em.find(Walletaccount.class,fromaccountid);
-    	  Walletaccount wal_account2=em.find(Walletaccount.class,toaccountid);
+    	  Walletaccount walletaccount1=em.find(Walletaccount.class,fromaccountid);
+    	  Walletaccount walletaccount2=em.find(Walletaccount.class,toaccountid);
     	  long transactionID=new Random().nextInt(100000);
-    	  if((wal_account1!=null)&(wal_account2!=null))
+    	  if((walletaccount1!=null)&&(walletaccount2!=null)&&(walletaccount1.getAccountbalance()>amount))
     	  {
     		  Wallettransaction wt=new Wallettransaction();
 				wt.setAccountid(fromaccountid);
-				wt.setAccountbalance(wal_account1.getAccountbalance()-amount);
+				wt.setAccountbalance(walletaccount1.getAccountbalance()-amount);
 				wt.setAmount(amount);
 				wt.setDescription("Transfering money");
-				//wt.setTransactionDate(new Date());
+				LocalDate localdate=LocalDate.now();
+				wt.setTransactionDate(localdate);
 				wt.setTransactionID(transactionID);
 				em.merge(wt);
     		  
-    		  wal_account1.setAccountbalance(wal_account1.getAccountbalance()-amount);
-    		  wal_account1.setStatus("withdrawn(transfered to other account)");
-    		  wal_account2.setAccountbalance(wal_account2.getAccountbalance()+amount);
-    		  wal_account2.setStatus("Deposited from other account");
-    		  return wal_account1;
+    		  walletaccount1.setAccountbalance(walletaccount1.getAccountbalance()-amount);
+    		  walletaccount1.setStatus("withdrawn(transfered to other account)");
+    		  walletaccount2.setAccountbalance(walletaccount2.getAccountbalance()+amount);
+    		  walletaccount2.setStatus("Deposited from other account");
+    		  return walletaccount1;
     	  }
     	  else{
     		  return null;  
@@ -95,11 +108,11 @@ public class WalletaccountdaoImpl implements Walletaccountdao{
 
 	@Override
 	public double getbalance(int id) {
-		Walletaccount wal_account=em.find(Walletaccount.class,id);
+		Walletaccount walletaccount=em.find(Walletaccount.class,id);
 		double balance = 0;
-		if(wal_account!=null)
+		if(walletaccount!=null)
 		{
-		      balance=wal_account.getAccountbalance();
+		      balance=walletaccount.getAccountbalance();
 		}
 		return balance;
 	}

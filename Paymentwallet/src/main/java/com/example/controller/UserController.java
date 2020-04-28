@@ -3,10 +3,8 @@ package com.example.controller;
 import java.util.List;
 
 import com.example.exceptions.IdNotFoundException;
-import com.example.exceptions.UserNotFoundException;
 import com.example.service.UserService;
 
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -24,7 +22,7 @@ import com.example.entity.Userdata;
 
 @RestController
 @RequestMapping("/user")
-//@CrossOrigin("http://localhost:4200")
+@CrossOrigin("http://localhost:4200")
 public class UserController {
 	@Autowired
 	UserService serviceobj;
@@ -36,17 +34,24 @@ public class UserController {
 		if (e == null) {
 			throw new IdNotFoundException("Enter Valid Id");
 		} else {
-			return new ResponseEntity<String>("User created successfully", new HttpHeaders(), HttpStatus.OK);
+			return new ResponseEntity<>("User created successfully", new HttpHeaders(), HttpStatus.OK);
 		}
 	}
 
 	
 	// Get all users
 	@GetMapping("/GetAllUsers")
-	private ResponseEntity<List<Userdata>> getAllUsers() {
+	public ResponseEntity<List<Userdata>> getAllUsers() {
 		List<Userdata> userlist = serviceobj.getAllUsers();
-		return new ResponseEntity<List<Userdata>>(userlist, new HttpHeaders(), HttpStatus.OK);
+		return new ResponseEntity<>(userlist, new HttpHeaders(), HttpStatus.OK);
 
+	}
+	
+	@GetMapping("/getuserbyid/{userId}")
+	public ResponseEntity<Userdata> getuserbyid(@PathVariable("userId") int userId)
+	{
+		Userdata u= serviceobj.getuserbyid(userId);
+		return new ResponseEntity<>(u,new HttpHeaders(), HttpStatus.OK);
 	}
 
 	//Update User
@@ -56,41 +61,30 @@ public class UserController {
 		if (e == null) {
 			throw new IdNotFoundException("Update Operation Unsuccessful,Provided Id does not exist");
 		} else {
-			return new ResponseEntity<String>("User updated successfully", new HttpHeaders(), HttpStatus.OK);
+			return new ResponseEntity<>("User updated successfully", new HttpHeaders(), HttpStatus.OK);
 		}
 	}
 	
 	// Delete User
 	@DeleteMapping("/DeleteUser/{userId}")
-	private ResponseEntity<String> deleteUser(@PathVariable("userId") int userId) {
-		Userdata e = serviceobj.deleteUser(userId);
-		if (e == null) {
-			throw new IdNotFoundException("Delete Operation Unsuccessful,Provided Id does not exist");
-		} else {
-			return new ResponseEntity<String>("User deleted successfully", new HttpHeaders(), HttpStatus.OK);
-		}
+	public ResponseEntity<String> deleteUser(@PathVariable("userId") int userId) {
+		serviceobj.deleteUser(userId);
+		
+			return new ResponseEntity<>("User deleted successfully", new HttpHeaders(), HttpStatus.OK);
+		
 	}
-	
 
 	@PutMapping("/Loginuser")
 	public ResponseEntity<String> loginUser(@RequestBody Userdata u)
 	{
 		
 		 boolean flag=serviceobj.loginUser(u);
-		if(flag==false)
+		if(!flag)
 		{
-			throw new UserNotFoundException("User not found");
+			throw new IdNotFoundException("User not found");
 		}else {
-			return new ResponseEntity<String>("Login successful", new HttpHeaders(), HttpStatus.OK);
+			return new ResponseEntity<>("Login successful", new HttpHeaders(), HttpStatus.OK);
 		}
 	}
 
-	@ExceptionHandler(IdNotFoundException.class)
-	public ResponseEntity<String> userNotFound(IdNotFoundException e) {
-		return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
-	}
-	@ExceptionHandler(UserNotFoundException.class)
-	public ResponseEntity<String> userNotFound(UserNotFoundException e){
-		return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
-	}
 }

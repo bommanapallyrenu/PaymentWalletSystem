@@ -1,5 +1,6 @@
 package com.example.dao;
 
+import java.util.Collections;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -7,8 +8,6 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import org.springframework.stereotype.Repository;
-
-import com.example.entity.Userdata;
 import com.example.entity.Walletaccount;
 import com.example.entity.Wallettransaction;
 
@@ -22,24 +21,24 @@ public class WallettransactiondaoImpl implements Wallettransactiondao{
 	@Override
 	public List<Wallettransaction> getAllTransaction() {
 		Query q=em.createQuery("select m from Wallettransaction m");
-		List<Wallettransaction> translist=q.getResultList();
-		return translist;
+		
+		return q.getResultList();
 		
 	}
 
 	@Override
 	public List<Wallettransaction> getAllTransactionById(Walletaccount wa) {
 	    
-		Walletaccount wal_account=em.find(Walletaccount.class, wa.getAccountid());
-		if(wal_account!=null){
+		Walletaccount walletaccount=em.find(Walletaccount.class, wa.getAccountid());
+		if(walletaccount!=null){
 		Query q=em.createQuery("select m from Wallettransaction m where m.accountid=?1");
 		q.setParameter(1, wa.getAccountid());
-		List<Wallettransaction> translist=q.getResultList();
-		return translist;
+		
+		return q.getResultList();
 		}
 		else
 		{
-			return null;
+			return Collections.emptyList();
 		}
 	}
 

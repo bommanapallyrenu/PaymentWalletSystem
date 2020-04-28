@@ -5,11 +5,8 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.dao.UserDaoImpl;
 import com.example.dao.WalletaccountdaoImpl;
-import com.example.entity.Userdata;
 import com.example.entity.Walletaccount;
-import com.example.entity.Wallettransaction;
 
 
 
@@ -22,14 +19,14 @@ public class WalletaccountServiceImpl implements WalletaccountService{
 
 
 	@Override
-	public Walletaccount addAccount(Walletaccount wa) {
-		// TODO Auto-generated method stub
-		return dao.addAccount(wa);
+	public Walletaccount addAccount(int userid,Walletaccount wa) {
+		
+		return dao.addAccount(userid,wa);
 	}
 
 	@Override
 	public Walletaccount deleteaccount(int accountid) {
-		// TODO Auto-generated method stub
+		
 		return dao.deleteaccount(accountid);
 	}
 	
