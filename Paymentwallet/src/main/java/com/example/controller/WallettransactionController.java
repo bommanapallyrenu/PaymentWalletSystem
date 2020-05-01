@@ -8,11 +8,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.entity.Walletaccount;
 import com.example.entity.Wallettransaction;
 import com.example.exceptions.IdNotFoundException;
 import com.example.service.WallettransactionService;
@@ -34,11 +33,11 @@ public class WallettransactionController {
 		}
 		
 		// Get All Transaction Data by id
-		@GetMapping("/GetAllTransactionsById")
-		public ResponseEntity<List<Wallettransaction>> getAllTransactionById(@RequestBody Walletaccount wa) {
-			List<Wallettransaction> translist = serviceobj.getAllTransactionById(wa);
+		@GetMapping("/GetAllTransactionsById/{accountid}")
+		public ResponseEntity<List<Wallettransaction>> getAllTransactionById(@PathVariable("accountid") int accountid) {
+			List<Wallettransaction> translist = serviceobj.getAllTransactionById(accountid);
 			
-			if (translist == null) {
+			if (translist.isEmpty()) {
 				throw new IdNotFoundException("Enter Valid Id");
 			}
 			else{

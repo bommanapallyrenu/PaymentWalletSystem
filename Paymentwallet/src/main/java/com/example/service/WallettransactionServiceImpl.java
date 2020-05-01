@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.dao.WallettransactiondaoImpl;
-import com.example.entity.Walletaccount;
 import com.example.entity.Wallettransaction;
 
 @Service
@@ -26,9 +25,9 @@ public class WallettransactionServiceImpl implements WallettransactionService{
 	}
 
 	@Override
-	public List<Wallettransaction> getAllTransactionById(Walletaccount wa) {
+	public List<Wallettransaction> getAllTransactionById(int accountid) {
 		
-		return dao.getAllTransactionById(wa);
+		return dao.getAllTransactionById(accountid);
 	}
 
 

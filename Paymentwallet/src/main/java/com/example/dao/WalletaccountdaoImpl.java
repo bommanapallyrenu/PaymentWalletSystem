@@ -87,7 +87,7 @@ public class WalletaccountdaoImpl implements Walletaccountdao{
 				wt.setAccountid(fromaccountid);
 				wt.setAccountbalance(walletaccount1.getAccountbalance()-amount);
 				wt.setAmount(amount);
-				wt.setDescription("Transfering money");
+				wt.setDescription("Transfered money");
 				LocalDate localdate=LocalDate.now();
 				wt.setTransactionDate(localdate);
 				wt.setTransactionID(transactionID);

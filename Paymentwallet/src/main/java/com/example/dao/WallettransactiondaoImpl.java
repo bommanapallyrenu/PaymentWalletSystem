@@ -27,12 +27,12 @@ public class WallettransactiondaoImpl implements Wallettransactiondao{
 	}
 
 	@Override
-	public List<Wallettransaction> getAllTransactionById(Walletaccount wa) {
+	public List<Wallettransaction> getAllTransactionById(int accountid) {
 	    
-		Walletaccount walletaccount=em.find(Walletaccount.class, wa.getAccountid());
+		Walletaccount walletaccount=em.find(Walletaccount.class, accountid);
 		if(walletaccount!=null){
 		Query q=em.createQuery("select m from Wallettransaction m where m.accountid=?1");
-		q.setParameter(1, wa.getAccountid());
+		q.setParameter(1,accountid);
 		
 		return q.getResultList();
 		}
