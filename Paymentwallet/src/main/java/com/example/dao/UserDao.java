@@ -9,6 +9,5 @@ import com.example.entity.Userdata;
 
 @Repository
 public interface UserDao extends JpaRepository<Userdata, Integer> {
-	
-	
+
 }

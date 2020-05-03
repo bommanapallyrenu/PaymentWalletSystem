@@ -27,6 +27,22 @@ public class Userdata {
 	private Walletaccount walletaccount;
 	
 	
+	public Userdata(int userId, String userName, String userPassword, long userPhoneno, String userEmail) {
+		super();
+		this.userId = userId;
+		this.userName = userName;
+		this.userPassword = userPassword;
+		this.userPhoneno = userPhoneno;
+		this.userEmail = userEmail;
+	}
+
+	public Userdata(int userId, String userPassword) {
+		super();
+		this.userId = userId;
+		this.userPassword = userPassword;
+	}
+
+
 	public Walletaccount getWalletaccount() {
 		return walletaccount;
 	}

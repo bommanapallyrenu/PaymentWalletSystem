@@ -31,7 +31,9 @@ return dao.findAll();
 
 @Override
 public Userdata getuserbyid(int userId) {
+	
 	Optional<Userdata> a = dao.findById(userId);
+	
 	if (a.isPresent()) 
 		 return a.get();
 	else

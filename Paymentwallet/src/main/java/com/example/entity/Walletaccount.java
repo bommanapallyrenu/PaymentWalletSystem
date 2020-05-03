@@ -18,6 +18,23 @@ public class Walletaccount
 		super();
 	}
 	
+	
+	
+	public Walletaccount(int accountid) {
+		super();
+		this.accountid = accountid;
+	}
+
+
+
+	public Walletaccount(int accountid, double accountbalance, String status) {
+		this.accountid = accountid;
+		this.accountbalance = accountbalance;
+		this.status = status;
+	}
+
+
+
 	public int getAccountid() {
 		return accountid;
 	}

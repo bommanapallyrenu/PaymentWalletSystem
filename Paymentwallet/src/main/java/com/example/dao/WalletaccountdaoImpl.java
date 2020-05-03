@@ -103,8 +103,6 @@ public class WalletaccountdaoImpl implements Walletaccountdao{
     		  return null;  
     	  }
 	 }
-	
-
 
 	@Override
 	public double getbalance(int id) {
