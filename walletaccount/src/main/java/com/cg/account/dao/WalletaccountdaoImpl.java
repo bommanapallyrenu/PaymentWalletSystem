@@ -1,4 +1,4 @@
-package com.example.dao;
+package com.cg.account.dao;
 
 import java.time.LocalDate;
 import java.util.Random;
@@ -7,10 +7,11 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.springframework.stereotype.Repository;
-import com.example.entity.Userdata;
-import com.example.entity.Walletaccount;
-import com.example.entity.Wallettransaction;
-import com.example.exceptions.AccountWithUserIdExistsException;
+
+import com.cg.account.entity.Userdata;
+import com.cg.account.entity.Walletaccount;
+import com.cg.account.entity.Wallettransaction;
+import com.cg.account.exceptions.AccountWithUserIdExistsException;
 
 
 @Repository
@@ -37,27 +38,22 @@ public class WalletaccountdaoImpl implements Walletaccountdao{
 		else
 			throw new AccountWithUserIdExistsException("account with this userid exists");
 	}
-	
-	
-	@Override	
-	public Walletaccount deleteaccount(int accountid) {
-		Walletaccount wa=em.find(Walletaccount.class,accountid);
-		if(wa!=null)
-			{
-			   em.remove(wa);
-			}
-        return wa;
-	}
-	
-	@Override
-	public Walletaccount deposit(Walletaccount wa, double amount) {
 		
-		  Walletaccount walletaccount=em.find(Walletaccount.class,wa.getAccountid());
+	@Override
+	public Walletaccount deposit(int id1, double amount) {
+		Userdata userdata=em.find(Userdata.class,id1 );
+		if(userdata==null)
+		{
+			return null;
+		}
+		
+		 int accountid1=userdata.getWalletaccount().getAccountid();
+		  Walletaccount walletaccount=em.find(Walletaccount.class,accountid1);
 		  long transactionID=new Random().nextInt(100000);
 			if((walletaccount!=null)&&(amount>0))
 			{
 				Wallettransaction wt=new Wallettransaction();
-				wt.setAccountid(wa.getAccountid());
+				wt.setAccountid(accountid1);
 				wt.setAccountbalance(walletaccount.getAccountbalance()+amount);
 				wt.setAmount(amount);
 				wt.setDescription("Deposited");
@@ -77,7 +73,13 @@ public class WalletaccountdaoImpl implements Walletaccountdao{
 	}
 	
 	@Override
-      public Walletaccount fundTransfer(int fromaccountid, int toaccountid, double amount) {
+      public Walletaccount fundTransfer(int id, int toaccountid, double amount) {
+		Userdata userdata=em.find(Userdata.class,id );
+		if(userdata==null)
+		{
+			return null;
+		}
+		  int fromaccountid=userdata.getWalletaccount().getAccountid();
     	  Walletaccount walletaccount1=em.find(Walletaccount.class,fromaccountid);
     	  Walletaccount walletaccount2=em.find(Walletaccount.class,toaccountid);
     	  long transactionID=new Random().nextInt(100000);
@@ -103,14 +105,23 @@ public class WalletaccountdaoImpl implements Walletaccountdao{
     		  return null;  
     	  }
 	 }
+	
+
 
 	@Override
 	public double getbalance(int id) {
-		Walletaccount walletaccount=em.find(Walletaccount.class,id);
 		double balance = 0;
+		
+		Userdata userdata=em.find(Userdata.class, id);
+		if(userdata!=null)
+		{
+			int accountid=userdata.getWalletaccount().getAccountid();
+		
+		Walletaccount walletaccount=em.find(Walletaccount.class,accountid);
 		if(walletaccount!=null)
 		{
 		      balance=walletaccount.getAccountbalance();
+		}
 		}
 		return balance;
 	}
