@@ -1,4 +1,4 @@
-package com.cg.account.entity;
+package com.cg.walletuser.entity;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -44,6 +44,14 @@ public class Userdata {
 		this.userPassword = userPassword;
 		this.userPhoneno = userPhoneno;
 		this.userEmail = userEmail;
+	}
+
+	
+
+	public Userdata(int userId, String userPassword) {
+		super();
+		this.userId = userId;
+		this.userPassword = userPassword;
 	}
 
 	public int getUserId() {

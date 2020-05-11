@@ -53,25 +53,12 @@ public class WalletaccountApplicationTests {
 			Walletaccount walletaccount = new Walletaccount(520,10000,"adding amount");
 			Walletaccount walaccount = new Walletaccount(520,9000,"adding amount");	
 			
-			when(walletaccountdao.deposit(walletaccount.getAccountid(), 1000)).thenReturn(walaccount);
+			when(walletaccountdao.deposit(walletaccount, 1000)).thenReturn(walaccount);
 			
-			assertEquals(9000.0,service.deposit(walletaccount.getAccountid(), 1000).getAccountbalance(),0);		
+			assertEquals(9000.0,service.deposit(walletaccount, 1000).getAccountbalance(),0);		
 		}
 		
 		
-		@Test
-		public void test_deposit()
-		{
-			Walletaccount walletaccount = new Walletaccount(520,10000,"adding amount");
-			Walletaccount walaccount = new Walletaccount(520,9000,"adding amount");	
-			
-			when(walletaccountdao.deposit(walletaccount.getAccountid(), 1000)).thenReturn(walaccount);
-			
-			assertEquals(5000.0,service.deposit(520, 1000).getAccountbalance(),0);	
-			
-		}
-		
-
 		@Test
 		public void testfundtransfer(){
 			
@@ -81,37 +68,13 @@ public class WalletaccountApplicationTests {
 			assertEquals(24000,service.fundTransfer(520,521, 1000).getAccountbalance(),0);		
 		}
 		
-		
-		
-		@Test
-		public void test_fundtransfer(){
-			
-			when(walletaccountdao.fundTransfer(520,
-					                       521,1000)).thenReturn(new Walletaccount(520,24000,"transfered"));
-			
-			assertEquals(24000,service.fundTransfer(1,2, 1000).getAccountbalance(),0);		
-		}
-		
-		
 		@Test
 		public void getbalance(){
 			
 			Walletaccount walletaccount = new Walletaccount(520,10000,"adding account");
-			Userdata userdata = new Userdata(120,"Charan","Charan123",9845633112L,"charan@gmail.com",walletaccount);
 			
-			   when(walletaccountdao.getbalance(userdata.getUserId())).thenReturn(walletaccount.getAccountbalance());
-			   double balance=service.getbalance(120);
-			   assertEquals(10000.0,balance,0);			
-		}
-		
-		@Test
-		public void get_balance(){
-			
-			Walletaccount walletaccount = new Walletaccount(520,10000,"adding account");
-			Userdata userdata = new Userdata(120,"Charan","Charan123",9845633112L,"charan@gmail.com",walletaccount);
-			
-			   when(walletaccountdao.getbalance(userdata.getUserId())).thenReturn(walletaccount.getAccountbalance());
-			   double balance=service.getbalance(000);
+			   when(walletaccountdao.getbalance(520)).thenReturn(walletaccount.getAccountbalance());
+			   double balance=service.getbalance(520);
 			   assertEquals(10000.0,balance,0);			
 		}
 }

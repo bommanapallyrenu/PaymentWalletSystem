@@ -39,9 +39,9 @@ public class WalletaccountController {
 		}
 		
 		
-		@PutMapping("/Deposit/{accountid1}/{amount}")
-		public ResponseEntity<String> deposit(@PathVariable("accountid1") int accountid1,@PathVariable("amount") double amount) {
-			Walletaccount walletaccount = serviceobj.deposit(accountid1, amount);
+		@PutMapping("/Deposit/{amount}")
+		public ResponseEntity<String> deposit(@RequestBody Walletaccount wa,@PathVariable("amount") double amount) {
+			Walletaccount walletaccount = serviceobj.deposit(wa, amount);
 		     if(amount<0&&walletaccount==null)
 			{
 				throw new AmountLessThanZeroException("Amount cannot be less than zero");	

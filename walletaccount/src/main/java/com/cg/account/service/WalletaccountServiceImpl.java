@@ -25,9 +25,9 @@ public class WalletaccountServiceImpl implements WalletaccountService{
 	}
 	
 	@Override
-	public Walletaccount deposit(int accountid1,double amount)
+	public Walletaccount deposit(Walletaccount wa,double amount)
 	{
-		return dao.deposit(accountid1, amount);
+		return dao.deposit(wa, amount);
 	}
 	@Override
 	public double getbalance(int id)

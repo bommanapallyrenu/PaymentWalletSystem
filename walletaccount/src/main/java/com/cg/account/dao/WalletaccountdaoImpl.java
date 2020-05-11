@@ -40,20 +40,15 @@ public class WalletaccountdaoImpl implements Walletaccountdao{
 	}
 		
 	@Override
-	public Walletaccount deposit(int id1, double amount) {
-		Userdata userdata=em.find(Userdata.class,id1 );
-		if(userdata==null)
-		{
-			return null;
-		}
+	public Walletaccount deposit(Walletaccount wa, double amount) {
+		  
 		
-		 int accountid1=userdata.getWalletaccount().getAccountid();
-		  Walletaccount walletaccount=em.find(Walletaccount.class,accountid1);
+		  Walletaccount walletaccount=em.find(Walletaccount.class,wa.getAccountid());
 		  long transactionID=new Random().nextInt(100000);
 			if((walletaccount!=null)&&(amount>0))
 			{
 				Wallettransaction wt=new Wallettransaction();
-				wt.setAccountid(accountid1);
+				wt.setAccountid(wa.getAccountid());
 				wt.setAccountbalance(walletaccount.getAccountbalance()+amount);
 				wt.setAmount(amount);
 				wt.setDescription("Deposited");

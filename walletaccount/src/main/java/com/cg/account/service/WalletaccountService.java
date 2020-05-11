@@ -6,7 +6,7 @@ public interface WalletaccountService {
 
     Walletaccount addAccount(int userid,Walletaccount wa) ;
     
-     Walletaccount deposit(int accountid1,double amount);
+     Walletaccount deposit(Walletaccount wa,double amount);
      
     double getbalance(int id);
 

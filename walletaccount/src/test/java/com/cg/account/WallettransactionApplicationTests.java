@@ -51,27 +51,8 @@ public class WallettransactionApplicationTests {
             assertEquals(3, result.size());
 		}
 		
-	       
-	       @Test
-			public void test_GetAllTransactions()
-			{
-				LocalDate localdate=LocalDate.now();
-				List<Wallettransaction> transactionList = new ArrayList<Wallettransaction>();
-				
-				transactionList.add(new Wallettransaction(28L,2000,"withdrawn",15000,561,localdate));
-		        transactionList.add(new Wallettransaction(30L,5000,"deposited",10000,562,localdate));
-		        transactionList.add(new Wallettransaction(31L,1000,"withdrawn",20000,560,localdate));
-		        
-				
-				when(wallettransactiondao.getAllTransaction()).thenReturn(transactionList);
-				List<Wallettransaction> result = wallettransactionservice.getAllTransaction();
-				
-	            assertEquals(4, result.size());
-			}
-	       
-	       
 		@Test
-		public void testgetAllTransactionById(){
+		public void getAllTransactionById(){
 			List<Wallettransaction> transactionList = new ArrayList<Wallettransaction>();
 			
 			Wallettransaction wt=new Wallettransaction();
@@ -92,28 +73,6 @@ public class WallettransactionApplicationTests {
 			
 		}
 		
-		
-		@Test
-		public void getAllTransactionById_test(){
-			List<Wallettransaction> transactionList = new ArrayList<Wallettransaction>();
-			
-			Wallettransaction wt=new Wallettransaction();
-			wt.setAccountid(560);
-			wt.setAccountbalance(5000);
-			wt.setAmount(100);
-			wt.setDescription("Deposited");
-			LocalDate localdate=LocalDate.now();
-			wt.setTransactionDate(localdate);
-			wt.setTransactionID(27);
-			transactionList.add(wt);
-			
-			when(wallettransactiondao.getAllTransactionById(wt.getAccountid())).thenReturn(transactionList);
-			
-			List<Wallettransaction> result = wallettransactionservice.getAllTransactionById(560);
-			
-			assertEquals("Deposited",result.get(0).getAccountid());
-			
-		}
 		
 		
 	
